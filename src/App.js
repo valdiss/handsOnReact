@@ -56,7 +56,7 @@ class App extends Component {
             return (
               <Person
                 key={person.uuid}
-                click={() => this.deletePersonHandler(index)}
+                click={this.deletePersonHandler.bind(this, index)}
                 name={person.name}
                 age={person.age}
                 changed={event => this.nameChangedHandler(event, person.uuid)} />

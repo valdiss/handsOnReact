@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Button from "material-ui/Button";
-import "./App.css";
+import classes from "./App.css";
 
 import Person from "./Person/Person";
 
@@ -66,10 +66,9 @@ class App extends Component {
     }
 
     return (
-      <div className="App">
+      <div className={classes.App}>
         <h1>Hi, I 'm a React App</h1>
-        <p style={style}
-        >This is really working!</p>
+        <p>This is really working!</p>
         <Button
           variant="raised"
           color="primary"

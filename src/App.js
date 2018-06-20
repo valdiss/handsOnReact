@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Button from "material-ui/Button";
-
+import Radium, { StyleRoot } from 'radium';
 import "./App.css";
 
 import Person from "./Person/Person";
@@ -47,6 +47,12 @@ class App extends Component {
   };
 
   render() {
+    const style = {
+      ':hover': {
+        backgroundColor: '#F3F3F3',
+        cursor: 'pointer'
+      }
+    };
     let persons = null;
 
     if (this.state.showPersons) {
@@ -64,24 +70,31 @@ class App extends Component {
           })}
         </div>
       );
+
+      style[":hover"] = {
+        backgroundColor: 'lightblue'
+      }
     }
 
     return (
-      <div className="App">
-        <h1>Hi, I 'm a React App</h1>
-        <p>This is really working!</p>
-        <Button
-          variant="raised"
-          color="primary"
-          onClick={this.togglePersonsHandler}
-        >
-          Toggle Persons
+      <StyleRoot>
+        <div className="App">
+          <h1>Hi, I 'm a React App</h1>
+          <p style={style}
+          >This is really working!</p>
+          <Button
+            variant="raised"
+            color="primary"
+            onClick={this.togglePersonsHandler}
+          >
+            Toggle Persons
         </Button>
-        {persons}
-      </div>
+          {persons}
+        </div>
+      </StyleRoot>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'I\'m a React App!!!'))
   }
 }
 
-export default App;
+export default Radium(App);

@@ -1,11 +1,23 @@
 import React, { Component } from "react";
-import Button from "material-ui/Button";
-import classes from "./App.css";
 
-import Person from "./Person/Person";
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Persons from "../components/Persons/Persons";
+import Cockpit from "../components/Cockpit/Cockpit";
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    console.log('App.js constructor, props: ', props);
+  }
+
+  componentWillMount() {
+    console.log('App.js componentWillMount');
+  }
+
+  componentDidMount() {
+    console.log('App.js componentDidMount');
+  }
+
   state = {
     persons: [
       { uuid: "1234", name: "Max", age: 28 },
@@ -47,42 +59,24 @@ class App extends Component {
   };
 
   render() {
+    console.log('App.js render');
     let persons = null;
 
     if (this.state.showPersons) {
-      const randomError = Math.floor(Math.random() * 3);
-      console.log(randomError);
-      if (randomError >= 2) {
-        throw new Error('something went wrong');
-      }
       persons = (
         <div>
-          {this.state.persons.map((person, index) => {
-            return (
-              <ErrorBoundary key={person.uuid}>
-                <Person
-                  click={this.deletePersonHandler.bind(this, index)}
-                  name={person.name}
-                  age={person.age}
-                  changed={event => this.nameChangedHandler(event, person.uuid)} />
-              </ErrorBoundary>
-            );
-          })}
+          <Persons persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler} />
         </div>
       );
     }
 
     return (
-      <div className={classes.App}>
-        <h1>Hi, I 'm a React App</h1>
-        <p>This is really working!</p>
-        <Button
-          variant="raised"
-          color="primary"
-          onClick={this.togglePersonsHandler}
-        >
-          Toggle Persons
-        </Button>
+      <div >
+        <Cockpit
+          appTitle={this.props.title}
+          toggle={this.togglePersonsHandler} />
         {persons}
       </div>
     );

@@ -3,6 +3,7 @@ import Button from "material-ui/Button";
 import classes from "./App.css";
 
 import Person from "./Person/Person";
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
   state = {
@@ -49,16 +50,22 @@ class App extends Component {
     let persons = null;
 
     if (this.state.showPersons) {
+      const randomError = Math.floor(Math.random() * 3);
+      console.log(randomError);
+      if (randomError >= 2) {
+        throw new Error('something went wrong');
+      }
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
             return (
-              <Person
-                key={person.uuid}
-                click={this.deletePersonHandler.bind(this, index)}
-                name={person.name}
-                age={person.age}
-                changed={event => this.nameChangedHandler(event, person.uuid)} />
+              <ErrorBoundary key={person.uuid}>
+                <Person
+                  click={this.deletePersonHandler.bind(this, index)}
+                  name={person.name}
+                  age={person.age}
+                  changed={event => this.nameChangedHandler(event, person.uuid)} />
+              </ErrorBoundary>
             );
           })}
         </div>

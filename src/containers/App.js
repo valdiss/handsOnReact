@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
 import Persons from "../components/Persons/Persons";
 import Cockpit from "../components/Cockpit/Cockpit";
 
-class App extends Component {
+class App extends PureComponent {
 
   constructor(props) {
     super(props);
@@ -58,6 +58,20 @@ class App extends Component {
     });
   };
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log('UPDATE App.js shouldComponentUpdate', nextProps, nextState);
+  //   return nextState.persons !== this.state.persons ||
+  //     nextState.showPersons !== this.state.showPersons;
+  // }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log('UPDATE App.js componentWillUpdate', nextProps, nextState);
+  }
+
+  componentDidUpdate() {
+    console.log('UPDATE App.js componentDidUpdate');
+  }
+
   render() {
     console.log('App.js render');
     let persons = null;
@@ -73,7 +87,8 @@ class App extends Component {
     }
 
     return (
-      <div >
+      <div>
+        <button onClick={() => { this.setState({ showPersons: true }) }}>Show Persons</button>
         <Cockpit
           appTitle={this.props.title}
           toggle={this.togglePersonsHandler} />

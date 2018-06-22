@@ -6,6 +6,8 @@ import withClass from '../hoc/withClass';
 
 import classes from './App.css';
 
+export const AuthContext = React.createContext(false);
+
 class App extends PureComponent {
 
   constructor(props) {
@@ -23,13 +25,14 @@ class App extends PureComponent {
 
   state = {
     persons: [
-      { uuid: "1234", name: "Max", age: '28' },
+      { uuid: "1234", name: "Max", age: 28 },
       { uuid: "2345", name: "Manu", age: 29 },
       { uuid: "3456", name: "Stephanie", age: 25 }
     ],
     otherState: "some other value",
     showPersons: false,
-    toggleClicked: 0
+    toggleClicked: 0,
+    authenticated: false
   };
 
   nameChangedHandler = (event, uuid) => {
@@ -75,8 +78,23 @@ class App extends PureComponent {
     console.log('UPDATE App.js componentWillUpdate', nextProps, nextState);
   }
 
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log('App.js getDerivedStateFromProps', nextProps, prevState);
+
+    return prevState;
+  }
+
+  getSnapshotBeforeUpdate() {
+    console.log('App.js getSnapshotBeforeUpdate');
+  }
+
   componentDidUpdate() {
     console.log('UPDATE App.js componentDidUpdate');
+  }
+
+  loginHandler = () => {
+    this.setState({ authenticated: true });
   }
 
   render() {
@@ -97,9 +115,12 @@ class App extends PureComponent {
       <React.Fragment>
         <button onClick={() => { this.setState({ showPersons: true }) }}>Show Persons</button>
         <Cockpit
+          login={this.loginHandler}
           appTitle={this.props.title}
           toggle={this.togglePersonsHandler} />
-        {persons}
+        <AuthContext.Provider value={this.state.authenticated}>
+          {persons}
+        </AuthContext.Provider>
       </React.Fragment>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'I\'m a React App!!!'))
